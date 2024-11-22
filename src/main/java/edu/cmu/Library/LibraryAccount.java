@@ -13,9 +13,14 @@ public class LibraryAccount {
      * @return an array of Book objects the user has checked out
      */
     public Book[] getBooks(String userId) {
-        String[] parts = userId.split(":");
-        String name = parts[0];
-        String id = parts[1];
-        return libraryService.getBooks(name, id);        
+        String[] parts = userIdParser(userId);
+        return libraryService.getBooks(parts[0], parts[1]);        
+    }
+
+    private String[] userIdParser(String userId) {
+        if (userId == null || !userId.contains(":")) {
+            throw new IllegalArgumentException("Invalid userId format. Expected format: 'libraryID:userName'.");
+        }
+        return userId.split(":");
     }
 }
